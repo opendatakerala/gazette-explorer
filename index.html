@@ -7,39 +7,48 @@
 <style>
 :root{
   --bg:#f6f3ec; --panel:#ffffff; --ink:#2a2620; --sub:#6b6357; --line:#e4ddd0;
-  --accent:#8a3324; --accent2:#c6702b; --chip:#efe6d6; --shadow:0 1px 3px rgba(0,0,0,.06);
+  --accent:#1f7a45; --accent2:#c6852b; --chip:#eaf1e7; --shadow:0 1px 3px rgba(0,0,0,.06);
+  --accent-dark:#155c33; --accent-light:#e5f0e5;
   box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#171410; --panel:#211d17; --ink:#efe9dd; --sub:#a89d89; --line:#332e24;
-    --accent:#e08a6d; --accent2:#e3a75a; --chip:#2c271e; --shadow:0 1px 3px rgba(0,0,0,.4);
+    --bg:#141712; --panel:#1c211a; --ink:#eaeee5; --sub:#9ba894; --line:#2c3327;
+    --accent:#4cbf7e; --accent2:#e0a94e; --chip:#233427; --shadow:0 1px 3px rgba(0,0,0,.4);
+    --accent-dark:#3a9a64; --accent-light:#1c3325;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#171410; --panel:#211d17; --ink:#efe9dd; --sub:#a89d89; --line:#332e24;
-  --accent:#e08a6d; --accent2:#e3a75a; --chip:#2c271e; --shadow:0 1px 3px rgba(0,0,0,.4);
+  --bg:#141712; --panel:#1c211a; --ink:#eaeee5; --sub:#9ba894; --line:#2c3327;
+  --accent:#4cbf7e; --accent2:#e0a94e; --chip:#233427; --shadow:0 1px 3px rgba(0,0,0,.4);
+  --accent-dark:#3a9a64; --accent-light:#1c3325;
 }
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px);}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,ui-serif,serif;min-height:100%;}
-header{padding:20px 20px 14px;border-bottom:2px solid var(--accent);background:var(--panel);
-  position:sticky;top:0;z-index:5;padding-top:calc(20px + env(safe-area-inset-top,0px));}
-h1{margin:0 0 2px;font-size:1.5rem;letter-spacing:.3px}
-.sub{color:var(--sub);font-size:.85rem;font-family:ui-sans-serif,system-ui,sans-serif}
-.lang-toggle{display:flex;gap:6px;justify-content:flex-end;margin-bottom:8px}
-.lang-toggle button{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.75rem;padding:4px 10px;border-radius:12px;
-  border:1px solid var(--line);background:transparent;color:var(--sub);cursor:pointer}
+header{padding:14px 16px 0;background:var(--panel);border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:5;padding-top:calc(14px + env(safe-area-inset-top,0px));
+  box-shadow:var(--shadow)}
+.theme-bar{height:4px;margin:-14px -16px 12px;background:linear-gradient(90deg,var(--accent-dark),var(--accent),var(--accent2));}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.brand{min-width:0}
+h1{margin:0 0 2px;font-size:1.35rem;letter-spacing:.2px;line-height:1.25}
+.sub{color:var(--sub);font-size:.8rem;font-family:ui-sans-serif,system-ui,sans-serif;max-width:520px}
+.lang-toggle{display:flex;gap:6px;flex-shrink:0}
+.lang-toggle button{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.72rem;padding:5px 11px;border-radius:12px;
+  border:1px solid var(--line);background:transparent;color:var(--sub);cursor:pointer;white-space:nowrap}
 .lang-toggle button.active{background:var(--ink);color:var(--panel);border-color:var(--ink)}
-.nav{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.nav button{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.85rem;padding:8px 16px;border-radius:20px;
-  border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.nav-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:12px -16px 0;padding:0 16px}
+.nav-scroll::-webkit-scrollbar{display:none}
+.nav{display:flex;gap:8px;padding-bottom:12px;width:max-content;min-width:100%}
+.nav button{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.82rem;padding:9px 16px;border-radius:20px;
+  border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;white-space:nowrap;flex-shrink:0}
 .nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.tabs{display:flex;gap:8px;margin-bottom:12px}
-.tab{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.8rem;padding:6px 14px;border-radius:16px;
-  border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.tabs{display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.8rem;padding:7px 15px;border-radius:16px;
+  border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;white-space:nowrap;flex-shrink:0}
 .tab.active{background:var(--accent2);color:#fff;border-color:var(--accent2)}
-main{max-width:1100px;margin:0 auto;padding:18px 16px 40px}
+main{max-width:1100px;margin:0 auto;padding:16px 14px 40px}
 .view{display:none}
 .view.active{display:block}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
@@ -53,6 +62,7 @@ select,input[type=text],input[type=search]{width:100%;padding:8px 10px;border-ra
   border:none;background:var(--accent);color:#fff;cursor:pointer;white-space:nowrap}
 .btn:hover{background:var(--accent2)}
 .big-search{display:flex;gap:8px;max-width:640px;margin:0 auto}
+@media(max-width:520px){.big-search{flex-direction:column}.big-search .btn{width:100%}}
 .meta{display:flex;justify-content:space-between;align-items:center;margin:14px 2px 8px;
   font-family:ui-sans-serif,system-ui,sans-serif;font-size:.85rem;color:var(--sub)}
 .reset{background:none;border:none;color:var(--accent2);cursor:pointer;font-size:.8rem;text-decoration:underline;padding:0}
@@ -61,12 +71,12 @@ table{width:100%;border-collapse:collapse;font-family:ui-sans-serif,system-ui,sa
 th{text-align:left;background:var(--chip);padding:9px 10px;font-size:.72rem;text-transform:uppercase;
   letter-spacing:.4px;color:var(--sub);position:sticky;top:0}
 td{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top}
-tr:hover td{background:rgba(138,51,36,.05)}
+tr:hover td{background:rgba(31,122,69,.06)}
 .pill{display:inline-block;background:var(--chip);border-radius:6px;padding:1px 7px;font-size:.75rem;color:var(--sub)}
 .badge{display:inline-block;border-radius:6px;padding:1px 8px;font-size:.72rem;font-weight:600;font-family:ui-sans-serif,system-ui,sans-serif}
-.badge.o{background:#dce8dd;color:#2c5c30}
-.badge.e{background:#f0dad2;color:var(--accent)}
-:root[data-theme="dark"] .badge.o, @media (prefers-color-scheme:dark){.badge.o{background:#233b26;color:#9fd6a4}}
+.badge.o{background:var(--accent-light);color:var(--accent-dark)}
+.badge.e{background:#f4e7d3;color:#8a5a1f}
+:root[data-theme="dark"] .badge.e, @media (prefers-color-scheme:dark){.badge.e{background:#3a2f18;color:#e0a94e}}
 a.dl{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
 a.dl:hover{text-decoration:underline}
 .pager{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:14px;
@@ -95,7 +105,7 @@ h2.kb{font-family:ui-sans-serif,system-ui,sans-serif;font-size:1rem;margin:0 0 1
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:720px){.grid2{grid-template-columns:1fr}}
 .mapwrap{display:flex;gap:16px;flex-wrap:wrap}
-.mapwrap svg{flex:0 0 320px;max-width:100%;height:auto;background:var(--bg);border-radius:10px;border:1px solid var(--line)}
+.mapwrap svg{flex:1 1 280px;max-width:340px;width:100%;height:auto;background:var(--bg);border-radius:10px;border:1px solid var(--line)}
 .district-list{flex:1;min-width:220px}
 .geo-poly{cursor:pointer;transition:opacity .15s;stroke:var(--panel);stroke-width:0.6}
 .geo-poly:hover{opacity:.8;stroke:var(--accent);stroke-width:1.2}
@@ -126,22 +136,50 @@ h2.kb{font-family:ui-sans-serif,system-ui,sans-serif;font-size:1rem;margin:0 0 1
   padding:9px 16px;border-radius:8px;font-weight:600}
 @media(max-width:720px){.modal-body{flex-direction:column;overflow-y:auto}.modal-pdf{border-right:none;border-bottom:1px solid var(--line)}
   .modal-pdf iframe{min-height:260px}}
+
+/* ---- Mobile optimization ---- */
+@media(max-width:640px){
+  header{padding:12px 12px 0;padding-top:calc(12px + env(safe-area-inset-top,0px))}
+  .theme-bar{margin:-12px -12px 10px}
+  h1{font-size:1.15rem}
+  .sub{font-size:.76rem}
+  main{padding:12px 10px 32px}
+  .panel{padding:12px}
+  .big-search input{font-size:16px}
+  select,input[type=text],input[type=search]{font-size:16px}
+  table{font-size:.8rem;min-width:600px}
+  th,td{padding:8px 7px}
+  .nav button{padding:10px 14px;font-size:.8rem}
+  .tab{padding:8px 13px}
+  .modal-box{max-height:96vh}
+  .modal-head{padding:10px 12px}
+  .kb-stat{font-size:.75rem}
+  .mapwrap{flex-direction:column}
+  .mapwrap svg{max-width:100%}
+}
 </style>
 </head>
 <body>
 <header>
-  <div class="lang-toggle">
-    <button data-lang="en" class="active">EN</button>
-    <button data-lang="ml">മലയാളം</button>
+  <div class="theme-bar"></div>
+  <div class="header-top">
+    <div class="brand">
+      <h1 data-i18n="title">Kerala Gazette Explorer</h1>
+      <div class="sub" data-i18n="subtitle">Browse Ordinary &amp; Extraordinary Gazette notifications published by the Government of Kerala</div>
+    </div>
+    <div class="lang-toggle">
+      <button data-lang="en" class="active">EN</button>
+      <button data-lang="ml">മ</button>
+    </div>
   </div>
-  <h1 data-i18n="title">Kerala Gazette Explorer</h1>
-  <div class="sub" data-i18n="subtitle">Browse Ordinary &amp; Extraordinary Gazette notifications published by the Government of Kerala</div>
-  <div class="nav">
-    <button data-view="search" class="active" data-i18n="nav_search">Search</button>
-    <button data-view="explore" data-i18n="nav_explore">Explore</button>
-    <button data-view="kb" data-i18n="nav_kb">Knowledge Base</button>
-    <button data-view="map" data-i18n="nav_map">Map</button>
-    <button data-view="calendar" data-i18n="nav_calendar">Calendar</button>
+  <div class="nav-scroll">
+    <div class="nav">
+      <button data-view="search" class="active" data-i18n="nav_search">Search</button>
+      <button data-view="explore" data-i18n="nav_explore">Explore</button>
+      <button data-view="kb" data-i18n="nav_kb">Knowledge Base</button>
+      <button data-view="map" data-i18n="nav_map">Map</button>
+      <button data-view="calendar" data-i18n="nav_calendar">Calendar</button>
+    </div>
   </div>
 </header>
 <main>
@@ -623,7 +661,13 @@ function ringsCentroid(rings){
   let x=0,y=0; ring.forEach(p=>{x+=p[0];y+=p[1];}); return [x/ring.length, y/ring.length];
 }
 function colorFor(t){
-  return `rgb(${138+Math.round((224-138)*t)},${51+Math.round((138-51)*(1-t))},${36+Math.round((51-36)*t)})`;
+  // light green (low) -> deep forest green (high), on-theme sequential scale
+  const stops = [[229,240,229],[124,192,146],[21,92,51]];
+  const seg = t<0.5 ? 0 : 1;
+  const lt = t<0.5 ? t*2 : (t-0.5)*2;
+  const a = stops[seg], b = stops[seg+1];
+  const r = Math.round(a[0]+(b[0]-a[0])*lt), g = Math.round(a[1]+(b[1]-a[1])*lt), bl = Math.round(a[2]+(b[2]-a[2])*lt);
+  return `rgb(${r},${g},${bl})`;
 }
 function buildMap(){
   mapBuilt=true;
@@ -742,7 +786,9 @@ function renderCalendarYear(year, dateCount){
   const W = leftPad + weeks*(cellSize+gap) + 10, H = topPad + 7*(cellSize+gap) + 10;
   const svg = document.getElementById('cal-svg');
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-  svg.setAttribute('width','100%');
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+  svg.style.minWidth = W+'px';
   let s = '';
   dayLabels.forEach((lab,i)=>{ if(lab) s += `<text x="4" y="${topPad+i*(cellSize+gap)+cellSize-2}" class="dlabel" text-anchor="start">${lab}</text>`; });
   let lastMonth=-1;
