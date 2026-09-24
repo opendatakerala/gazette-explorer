@@ -27,6 +27,10 @@ header{padding:20px 20px 14px;border-bottom:2px solid var(--accent);background:v
   position:sticky;top:0;z-index:5;padding-top:calc(20px + env(safe-area-inset-top,0px));}
 h1{margin:0 0 2px;font-size:1.5rem;letter-spacing:.3px}
 .sub{color:var(--sub);font-size:.85rem;font-family:ui-sans-serif,system-ui,sans-serif}
+.lang-toggle{display:flex;gap:6px;justify-content:flex-end;margin-bottom:8px}
+.lang-toggle button{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.75rem;padding:4px 10px;border-radius:12px;
+  border:1px solid var(--line);background:transparent;color:var(--sub);cursor:pointer}
+.lang-toggle button.active{background:var(--ink);color:var(--panel);border-color:var(--ink)}
 .nav{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 .nav button{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.85rem;padding:8px 16px;border-radius:20px;
   border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
@@ -126,13 +130,18 @@ h2.kb{font-family:ui-sans-serif,system-ui,sans-serif;font-size:1rem;margin:0 0 1
 </head>
 <body>
 <header>
-  <h1>Kerala Gazette Explorer</h1>
-  <div class="sub">Browse Ordinary &amp; Extraordinary Gazette notifications published by the Government of Kerala</div>
+  <div class="lang-toggle">
+    <button data-lang="en" class="active">EN</button>
+    <button data-lang="ml">മലയാളം</button>
+  </div>
+  <h1 data-i18n="title">Kerala Gazette Explorer</h1>
+  <div class="sub" data-i18n="subtitle">Browse Ordinary &amp; Extraordinary Gazette notifications published by the Government of Kerala</div>
   <div class="nav">
-    <button data-view="search" class="active">Search</button>
-    <button data-view="explore">Explore</button>
-    <button data-view="kb">Knowledge Base</button>
-    <button data-view="map">Map</button>
+    <button data-view="search" class="active" data-i18n="nav_search">Search</button>
+    <button data-view="explore" data-i18n="nav_explore">Explore</button>
+    <button data-view="kb" data-i18n="nav_kb">Knowledge Base</button>
+    <button data-view="map" data-i18n="nav_map">Map</button>
+    <button data-view="calendar" data-i18n="nav_calendar">Calendar</button>
   </div>
 </header>
 <main>
@@ -141,30 +150,32 @@ h2.kb{font-family:ui-sans-serif,system-ui,sans-serif;font-size:1rem;margin:0 0 1
   <section class="view active" id="view-search">
     <div class="panel">
       <div class="big-search">
-        <input type="text" id="global-q" placeholder="Search all 22,260 gazette files by department, subject or GO number...">
-        <button class="btn" id="global-search-btn">Search</button>
+        <input type="text" id="global-q" data-i18n="search_placeholder" placeholder="Search all gazette files by department, subject or GO number...">
+        <button class="btn" id="global-search-btn" data-i18n="btn_search">Search</button>
       </div>
     </div>
-    <div class="meta"><span id="s-count"></span><span></span></div>
-    <div class="tablewrap">
-      <table><thead><tr><th>Type</th><th>Date</th><th>Gazette No.</th><th>Subject</th><th>Department</th><th>PDF</th></tr></thead>
-      <tbody id="s-tbody"></tbody></table>
+    <div id="s-results" style="display:none">
+      <div class="meta"><span id="s-count"></span><span></span></div>
+      <div class="tablewrap">
+        <table><thead><tr><th data-i18n="th_type">Type</th><th data-i18n="th_date">Date</th><th data-i18n="th_gazette">Gazette No.</th><th data-i18n="th_subject">Subject</th><th data-i18n="th_dept">Department</th><th data-i18n="th_pdf">PDF</th></tr></thead>
+        <tbody id="s-tbody"></tbody></table>
+      </div>
+      <div class="pager" id="s-pager"></div>
     </div>
-    <div class="pager" id="s-pager"></div>
   </section>
 
   <!-- EXPLORE VIEW -->
   <section class="view" id="view-explore">
     <div class="tabs">
-      <button class="tab active" data-etab="o">Ordinary Gazette</button>
-      <button class="tab" data-etab="e">Extraordinary Gazette</button>
+      <button class="tab active" data-etab="o" data-i18n="tab_ordinary">Ordinary Gazette</button>
+      <button class="tab" data-etab="e" data-i18n="tab_extraordinary">Extraordinary Gazette</button>
     </div>
     <div class="panel">
       <div class="filters" id="e-filters"></div>
     </div>
-    <div class="meta"><span id="e-count"></span><button class="reset" id="e-reset">Reset filters</button></div>
+    <div class="meta"><span id="e-count"></span><button class="reset" id="e-reset" data-i18n="btn_reset">Reset filters</button></div>
     <div class="tablewrap">
-      <table><thead><tr><th>Date</th><th>Gazette No.</th><th>Subject</th><th>GO No.</th><th>Department</th><th>District / Taluk</th><th>PDF</th></tr></thead>
+      <table><thead><tr><th data-i18n="th_date">Date</th><th data-i18n="th_gazette">Gazette No.</th><th data-i18n="th_subject">Subject</th><th data-i18n="th_go">GO No.</th><th data-i18n="th_dept">Department</th><th data-i18n="th_loc">District / Taluk</th><th data-i18n="th_pdf">PDF</th></tr></thead>
       <tbody id="e-tbody"></tbody></table>
     </div>
     <div class="pager" id="e-pager"></div>
@@ -174,26 +185,26 @@ h2.kb{font-family:ui-sans-serif,system-ui,sans-serif;font-size:1rem;margin:0 0 1
   <section class="view" id="view-kb">
     <div class="grid2">
       <div class="panel">
-        <h2 class="kb">Timeline</h2>
-        <div class="kb-stat">Every gazette file, grouped by Year &rsaquo; Month &rsaquo; Day. Click a day to list its files.</div>
+        <h2 class="kb" data-i18n="kb_timeline">Timeline</h2>
+        <div class="kb-stat" data-i18n="kb_timeline_cap">Every gazette file, grouped by Year &rsaquo; Month &rsaquo; Day. Click a day to list its files.</div>
         <div class="tree scroll" id="kb-tree"></div>
       </div>
       <div class="panel">
-        <h2 class="kb">Departments</h2>
+        <h2 class="kb" data-i18n="kb_depts">Departments</h2>
         <div class="kb-stat" id="kb-dept-count"></div>
         <div class="scroll" id="kb-depts"></div>
       </div>
     </div>
     <div class="panel">
-      <h2 class="kb">Subjects</h2>
+      <h2 class="kb" data-i18n="kb_subjects">Subjects</h2>
       <div class="kb-stat" id="kb-subj-count"></div>
       <div class="scroll" id="kb-subjects"></div>
     </div>
     <div class="panel" id="kb-filelist-panel" style="display:none">
-      <button class="back-link" id="kb-filelist-close">&larr; Close file list</button>
+      <button class="back-link" id="kb-filelist-close" data-i18n="kb_close_list">&larr; Close file list</button>
       <h2 class="kb" id="kb-filelist-title"></h2>
       <div class="tablewrap">
-        <table><thead><tr><th>Type</th><th>Date</th><th>Gazette No.</th><th>Subject</th><th>Department</th><th>File ID</th></tr></thead>
+        <table><thead><tr><th data-i18n="th_type">Type</th><th data-i18n="th_date">Date</th><th data-i18n="th_gazette">Gazette No.</th><th data-i18n="th_subject">Subject</th><th data-i18n="th_dept">Department</th><th data-i18n="th_fileid">File ID</th></tr></thead>
         <tbody id="kb-filelist-tbody"></tbody></table>
       </div>
     </div>
@@ -202,8 +213,8 @@ h2.kb{font-family:ui-sans-serif,system-ui,sans-serif;font-size:1rem;margin:0 0 1
   <!-- MAP VIEW -->
   <section class="view" id="view-map">
     <div class="panel">
-      <h2 class="kb">Files by District</h2>
-      <div class="kb-stat" id="map-caption">Actual district boundaries. Colour reflects file count &mdash; click a district to zoom into its taluks.</div>
+      <h2 class="kb" data-i18n="map_title">Files by District</h2>
+      <div class="kb-stat" id="map-caption" data-i18n="map_cap">Actual district boundaries. Colour reflects file count &mdash; click a district to zoom into its taluks.</div>
       <div class="mapwrap">
         <svg id="kmap" viewBox="0 0 300 523" preserveAspectRatio="xMidYMid meet"></svg>
         <div class="district-list scroll" id="district-list"></div>
@@ -215,20 +226,35 @@ h2.kb{font-family:ui-sans-serif,system-ui,sans-serif;font-size:1rem;margin:0 0 1
     </div>
   </section>
 
-  <footer>An <b>OpenDataKerala</b> Initiative</footer>
+  <!-- CALENDAR VIEW -->
+  <section class="view" id="view-calendar">
+    <div class="panel">
+      <h2 class="kb" data-i18n="cal_title">Publication Calendar</h2>
+      <div class="kb-stat" data-i18n="cal_cap">Gazette files published each day. Darker means more files that day &mdash; click a day to see its files.</div>
+      <div class="filters" style="max-width:200px;margin-bottom:10px">
+        <div><label data-i18n="cal_year">Year</label><select id="cal-year"></select></div>
+      </div>
+      <div id="cal-total" class="kb-stat"></div>
+      <div class="tablewrap" style="border:none">
+        <svg id="cal-svg"></svg>
+      </div>
+    </div>
+  </section>
+
+  <footer><span data-i18n="footer">An OpenDataKerala Initiative, Supported by Servants of Knowledge</span></footer>
 </main>
 
 <!-- INLINE FILE VIEWER -->
 <div id="file-modal" class="modal-overlay">
   <div class="modal-box">
     <div class="modal-head">
-      <span id="modal-heading">Gazette file</span>
-      <button class="btn" id="modal-close">Close ✕</button>
+      <span id="modal-heading" data-i18n="modal_gazette_file">Gazette file</span>
+      <button class="btn" id="modal-close" data-i18n="modal_close">Close ✕</button>
     </div>
     <div class="modal-body">
       <div class="modal-pdf">
         <iframe id="modal-iframe" title="Gazette PDF preview"></iframe>
-        <div class="modal-fallback">If the preview doesn't load (some government PDFs block embedding), use "Open in new tab" on the right.</div>
+        <div class="modal-fallback" data-i18n="modal_fallback">If the preview doesn't load (some government PDFs block embedding), use "Open in new tab" on the right.</div>
       </div>
       <div class="modal-attrs" id="modal-attrs"></div>
     </div>
@@ -247,6 +273,97 @@ function dlUrl(gzNo, year, pdfId){
 function uniqSorted(arr){ return [...new Set(arr)].filter(Boolean).sort(); }
 function esc(s){ return (s||'').replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
 
+/* ---------- I18N ---------- */
+const STRINGS = {
+  en: {
+    title:'Kerala Gazette Explorer', subtitle:'Browse Ordinary & Extraordinary Gazette notifications published by the Government of Kerala',
+    nav_search:'Search', nav_explore:'Explore', nav_kb:'Knowledge Base', nav_map:'Map', nav_calendar:'Calendar',
+    search_placeholder:'Search all gazette files by department, subject or GO number...', btn_search:'Search',
+    tab_ordinary:'Ordinary Gazette', tab_extraordinary:'Extraordinary Gazette',
+    f_year:'Year', f_dept:'Department', f_part:'Part', f_district:'District', f_search:'Search subject / GO / dept.',
+    f_year_all:'All years', f_dept_all:'All departments', f_part_all:'All parts', f_district_all:'All districts',
+    f_type_filter:'Type to filter...', btn_reset:'Reset filters',
+    th_type:'Type', th_date:'Date', th_gazette:'Gazette No.', th_subject:'Subject', th_go:'GO No.',
+    th_dept:'Department', th_loc:'District / Taluk', th_pdf:'PDF', th_fileid:'File ID',
+    badge_o:'Ordinary', badge_e:'Extraordinary',
+    dl_open:'Open PDF ↗', prev:'← Prev', next:'Next →', page_of:(p,n)=>`Page ${p} of ${n}`,
+    records:n=>`${n.toLocaleString()} records`, matching_files:n=>`${n.toLocaleString()} matching files`,
+    no_records:'No records match these filters.', no_files:'No files match your search.',
+    kb_timeline:'Timeline', kb_timeline_cap:'Every gazette file, grouped by Year › Month › Day. Click a day to list its files.',
+    kb_depts:'Departments', kb_subjects:'Subjects',
+    kb_dept_count:(d,t)=>`${d} departments · ${t.toLocaleString()} files total`,
+    kb_subj_count:n=>`${n.toLocaleString()} distinct subjects`,
+    kb_files_on_day:d=>`Files published on ${d}`, kb_files_from_dept:d=>`Files from ${d}`, kb_files_on_subj:s=>`Files on "${s}"`,
+    kb_showing_first:(n,t)=>`Showing first ${n} of ${t.toLocaleString()} — use Explore or Search to filter further.`,
+    kb_close_list:'← Close file list',
+    map_title:'Files by District', map_cap:'Actual district boundaries. Colour reflects file count — click a district to zoom into its taluks.',
+    map_taluks_of:d=>`Taluks of ${d}.`, map_back:'← Back to all districts', map_no_taluk:'No taluk-level data for this district.',
+    cal_title:'Publication Calendar', cal_cap:'Gazette files published each day. Darker means more files that day — click a day to see its files.',
+    cal_year:'Year', cal_total:n=>`${n.toLocaleString()} files published in`,
+    modal_gazette_file:'Gazette file', modal_close:'Close ✕', modal_fallback:'If the preview doesn\'t load (some government PDFs block embedding), use "Open in new tab" on the right.',
+    modal_open_new:'Open PDF in new tab ↗',
+    a_type:'Type', a_fileid:'File ID (pdf_file_identifier)', a_date:'Date', a_year:'Year', a_gazette:'Gazette No.',
+    a_subject:'Subject', a_go:'GO No.', a_go_date:'GO Date', a_dept:'Department', a_part:'Part', a_district:'District', a_taluk:'Taluk',
+    footer:'An OpenDataKerala Initiative, Supported by Servants of Knowledge'
+  },
+  ml: {
+    title:'കേരള ഗസറ്റ് എക്സ്പ്ലോറർ', subtitle:'കേരള സർക്കാർ പ്രസിദ്ധീകരിക്കുന്ന സാധാരണ, അസാധാരണ ഗസറ്റ് വിജ്ഞാപനങ്ങൾ പരിശോധിക്കുക',
+    nav_search:'തിരയുക', nav_explore:'പര്യവേക്ഷണം', nav_kb:'വിജ്ഞാനശേഖരം', nav_map:'ഭൂപടം', nav_calendar:'കലണ്ടർ',
+    search_placeholder:'വകുപ്പ്, വിഷയം അല്ലെങ്കിൽ ജി.ഒ. നമ്പർ ഉപയോഗിച്ച് എല്ലാ ഗസറ്റ് ഫയലുകളും തിരയുക...', btn_search:'തിരയുക',
+    tab_ordinary:'സാധാരണ ഗസറ്റ്', tab_extraordinary:'അസാധാരണ ഗസറ്റ്',
+    f_year:'വർഷം', f_dept:'വകുപ്പ്', f_part:'ഭാഗം', f_district:'ജില്ല', f_search:'വിഷയം / ജി.ഒ. / വകുപ്പ് തിരയുക',
+    f_year_all:'എല്ലാ വർഷവും', f_dept_all:'എല്ലാ വകുപ്പുകളും', f_part_all:'എല്ലാ ഭാഗങ്ങളും', f_district_all:'എല്ലാ ജില്ലകളും',
+    f_type_filter:'ഫിൽട്ടർ ചെയ്യാൻ ടൈപ്പ് ചെയ്യുക...', btn_reset:'ഫിൽട്ടറുകൾ പുനഃസജ്ജമാക്കുക',
+    th_type:'തരം', th_date:'തീയതി', th_gazette:'ഗസറ്റ് നമ്പർ', th_subject:'വിഷയം', th_go:'ജി.ഒ. നമ്പർ',
+    th_dept:'വകുപ്പ്', th_loc:'ജില്ല / താലൂക്ക്', th_pdf:'PDF', th_fileid:'ഫയൽ ഐഡി',
+    badge_o:'സാധാരണ', badge_e:'അസാധാരണ',
+    dl_open:'PDF തുറക്കുക ↗', prev:'← മുമ്പത്തേത്', next:'അടുത്തത് →', page_of:(p,n)=>`പേജ് ${p} / ${n}`,
+    records:n=>`${n.toLocaleString()} രേഖകൾ`, matching_files:n=>`${n.toLocaleString()} പൊരുത്തപ്പെടുന്ന ഫയലുകൾ`,
+    no_records:'ഈ ഫിൽട്ടറുകളുമായി പൊരുത്തപ്പെടുന്ന രേഖകളൊന്നുമില്ല.', no_files:'നിങ്ങളുടെ തിരച്ചിലുമായി പൊരുത്തപ്പെടുന്ന ഫയലുകളൊന്നുമില്ല.',
+    kb_timeline:'കാലരേഖ', kb_timeline_cap:'ഓരോ ഗസറ്റ് ഫയലും വർഷം › മാസം › ദിവസം എന്ന ക്രമത്തിൽ. ഒരു ദിവസം ക്ലിക്ക് ചെയ്ത് ആ ദിവസത്തെ ഫയലുകൾ കാണുക.',
+    kb_depts:'വകുപ്പുകൾ', kb_subjects:'വിഷയങ്ങൾ',
+    kb_dept_count:(d,t)=>`${d} വകുപ്പുകൾ · ആകെ ${t.toLocaleString()} ഫയലുകൾ`,
+    kb_subj_count:n=>`${n.toLocaleString()} വ്യത്യസ്ത വിഷയങ്ങൾ`,
+    kb_files_on_day:d=>`${d}-ന് പ്രസിദ്ധീകരിച്ച ഫയലുകൾ`, kb_files_from_dept:d=>`${d} എന്നതിൽ നിന്നുള്ള ഫയലുകൾ`, kb_files_on_subj:s=>`"${s}" എന്ന വിഷയത്തിലെ ഫയലുകൾ`,
+    kb_showing_first:(n,t)=>`ആദ്യത്തെ ${n} / ആകെ ${t.toLocaleString()} കാണിക്കുന്നു — കൂടുതൽ ഫിൽട്ടർ ചെയ്യാൻ Explore അല്ലെങ്കിൽ Search ഉപയോഗിക്കുക.`,
+    kb_close_list:'← ഫയൽ പട്ടിക അടയ്ക്കുക',
+    map_title:'ജില്ല തിരിച്ചുള്ള ഫയലുകൾ', map_cap:'യഥാർത്ഥ ജില്ലാ അതിരുകൾ. നിറം ഫയൽ എണ്ണത്തെ സൂചിപ്പിക്കുന്നു — ഒരു ജില്ല ക്ലിക്ക് ചെയ്ത് അതിന്റെ താലൂക്കുകൾ കാണുക.',
+    map_taluks_of:d=>`${d} യിലെ താലൂക്കുകൾ.`, map_back:'← എല്ലാ ജില്ലകളിലേക്കും തിരികെ', map_no_taluk:'ഈ ജില്ലയ്ക്ക് താലൂക്ക് തല വിവരം ലഭ്യമല്ല.',
+    cal_title:'പ്രസിദ്ധീകരണ കലണ്ടർ', cal_cap:'ഓരോ ദിവസവും പ്രസിദ്ധീകരിച്ച ഗസറ്റ് ഫയലുകൾ. കടുത്ത നിറം കൂടുതൽ ഫയലുകളെ സൂചിപ്പിക്കുന്നു — ഒരു ദിവസം ക്ലിക്ക് ചെയ്ത് ഫയലുകൾ കാണുക.',
+    cal_year:'വർഷം', cal_total:n=>`${n.toLocaleString()} ഫയലുകൾ പ്രസിദ്ധീകരിച്ച വർഷം`,
+    modal_gazette_file:'ഗസറ്റ് ഫയൽ', modal_close:'അടയ്ക്കുക ✕', modal_fallback:'പ്രിവ്യൂ ലോഡാകുന്നില്ലെങ്കിൽ (ചില സർക്കാർ PDF-കൾ എംബെഡ്ഡിംഗ് അനുവദിക്കില്ല), വലതുവശത്തുള്ള "പുതിയ ടാബിൽ തുറക്കുക" ഉപയോഗിക്കുക.',
+    modal_open_new:'PDF പുതിയ ടാബിൽ തുറക്കുക ↗',
+    a_type:'തരം', a_fileid:'ഫയൽ ഐഡി (pdf_file_identifier)', a_date:'തീയതി', a_year:'വർഷം', a_gazette:'ഗസറ്റ് നമ്പർ',
+    a_subject:'വിഷയം', a_go:'ജി.ഒ. നമ്പർ', a_go_date:'ജി.ഒ. തീയതി', a_dept:'വകുപ്പ്', a_part:'ഭാഗം', a_district:'ജില്ല', a_taluk:'താലൂക്ക്',
+    footer:'An OpenDataKerala Initiative, Supported by Servants of Knowledge'
+  }
+};
+let LANG = 'en';
+function t(key, ...args){
+  const v = STRINGS[LANG][key];
+  return typeof v==='function' ? v(...args) : v;
+}
+function applyStaticI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.dataset.i18n;
+    if(el.tagName==='INPUT') el.setAttribute('placeholder', t(key));
+    else el.textContent = t(key);
+  });
+  document.documentElement.lang = LANG==='ml' ? 'ml' : 'en';
+  document.querySelectorAll('.lang-toggle button').forEach(b=>b.classList.toggle('active', b.dataset.lang===LANG));
+}
+function setLang(l){
+  LANG = l;
+  applyStaticI18n();
+  renderEFilters(); renderExplore(); renderSearch();
+  if(kbBuilt) buildKB();
+  if(mapBuilt) buildMap();
+  if(calBuilt) buildCalendar();
+}
+document.querySelectorAll('.lang-toggle button').forEach(b=>{
+  b.addEventListener('click', ()=>setLang(b.dataset.lang));
+});
+
 /* ---------- NAV ---------- */
 document.querySelectorAll('.nav button').forEach(btn=>{
   btn.addEventListener('click', ()=>{
@@ -256,6 +373,7 @@ document.querySelectorAll('.nav button').forEach(btn=>{
     document.getElementById('view-'+btn.dataset.view).classList.add('active');
     if(btn.dataset.view==='kb' && !kbBuilt) buildKB();
     if(btn.dataset.view==='map' && !mapBuilt) buildMap();
+    if(btn.dataset.view==='calendar' && !calBuilt) buildCalendar();
   });
 });
 
@@ -267,27 +385,28 @@ function sMatches(row){
   return row[6].toLowerCase().includes(q) || row[3].toLowerCase().includes(q) || row[4].toLowerCase().includes(q);
 }
 function renderSearch(){
-  const filtered = sState.q.trim() ? DATA.filter(sMatches) : DATA;
-  const showAll = !sState.q.trim();
-  document.getElementById('s-count').textContent = showAll
-    ? `${DATA.length.toLocaleString()} total files — enter a search term above`
-    : `${filtered.length.toLocaleString()} matching files`;
+  const q = sState.q.trim();
+  const results = document.getElementById('s-results');
+  if(!q){ results.style.display='none'; return; }
+  results.style.display='block';
+  const filtered = DATA.filter(sMatches);
+  document.getElementById('s-count').textContent = t('matching_files', filtered.length);
   const pages = Math.max(1, Math.ceil(filtered.length/sState.pageSize));
   if(sState.page>pages) sState.page=pages;
   const start=(sState.page-1)*sState.pageSize;
   const rows = filtered.slice(start,start+sState.pageSize);
   const tb = document.getElementById('s-tbody');
-  tb.innerHTML = rows.length===0 ? `<tr><td colspan="6"><div class="empty">No files match your search.</div></td></tr>` :
+  tb.innerHTML = rows.length===0 ? `<tr><td colspan="6"><div class="empty">${t('no_files')}</div></td></tr>` :
     rows.map(r=>{
       const [year,date,gzNo,subj,goNo,goDate,dept,part,dist,taluk,pdfId,inOrd] = r;
-      return `<tr><td><span class="badge ${inOrd?'o':'e'}">${inOrd?'Ordinary':'Extraordinary'}</span></td><td>${date}</td>
+      return `<tr><td><span class="badge ${inOrd?'o':'e'}">${inOrd?t('badge_o'):t('badge_e')}</span></td><td>${date}</td>
         <td><span class="pill">#${gzNo}/${year}</span></td><td>${esc(subj)||'&mdash;'}</td><td>${esc(dept)||'&mdash;'}</td>
-        <td><a class="dl" href="${dlUrl(gzNo,year,pdfId)}" target="_blank" rel="noopener">Open PDF &#8599;</a></td></tr>`;
+        <td><a class="dl" href="${dlUrl(gzNo,year,pdfId)}" target="_blank" rel="noopener">${t('dl_open')}</a></td></tr>`;
     }).join('');
   document.getElementById('s-pager').innerHTML = `
-    <button id="s-prev" ${sState.page<=1?'disabled':''}>&larr; Prev</button>
-    <span>Page ${sState.page} of ${pages}</span>
-    <button id="s-next" ${sState.page>=pages?'disabled':''}>Next &rarr;</button>`;
+    <button id="s-prev" ${sState.page<=1?'disabled':''}>${t('prev')}</button>
+    <span>${t('page_of', sState.page, pages)}</span>
+    <button id="s-next" ${sState.page>=pages?'disabled':''}>${t('next')}</button>`;
   const pv=document.getElementById('s-prev'), nx=document.getElementById('s-next');
   if(pv) pv.onclick=()=>{sState.page--;renderSearch();window.scrollTo({top:0,behavior:'smooth'});};
   if(nx) nx.onclick=()=>{sState.page++;renderSearch();window.scrollTo({top:0,behavior:'smooth'});};
@@ -311,11 +430,11 @@ function renderEFilters(){
   const dists = uniqSorted(rows.map(r=>r[8]));
   const f = document.getElementById('e-filters');
   f.innerHTML = `
-    <div><label>Year</label><select id="ef-year"><option value="">All years</option>${years.map(y=>`<option value="${y}">${y}</option>`).join('')}</select></div>
-    <div><label>Department</label><select id="ef-dept"><option value="">All departments</option>${depts.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('')}</select></div>
-    <div><label>Part</label><select id="ef-part"><option value="">All parts</option>${parts.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('')}</select></div>
-    ${dists.length?`<div><label>District</label><select id="ef-dist"><option value="">All districts</option>${dists.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('')}</select></div>`:''}
-    <div><label>Search subject / GO / dept.</label><input type="text" id="ef-q" placeholder="Type to filter..."></div>`;
+    <div><label>${t('f_year')}</label><select id="ef-year"><option value="">${t('f_year_all')}</option>${years.map(y=>`<option value="${y}">${y}</option>`).join('')}</select></div>
+    <div><label>${t('f_dept')}</label><select id="ef-dept"><option value="">${t('f_dept_all')}</option>${depts.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('')}</select></div>
+    <div><label>${t('f_part')}</label><select id="ef-part"><option value="">${t('f_part_all')}</option>${parts.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('')}</select></div>
+    ${dists.length?`<div><label>${t('f_district')}</label><select id="ef-dist"><option value="">${t('f_district_all')}</option>${dists.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('')}</select></div>`:''}
+    <div><label>${t('f_search')}</label><input type="text" id="ef-q" placeholder="${t('f_type_filter')}"></div>`;
   ['ef-year','ef-dept','ef-part','ef-dist'].forEach(id=>{
     const el = document.getElementById(id); if(!el) return;
     el.addEventListener('change', ()=>{
@@ -323,8 +442,8 @@ function renderEFilters(){
       eState.filters[key]=el.value; eState.page=1; renderExplore();
     });
   });
-  let t; document.getElementById('ef-q').addEventListener('input', e=>{
-    clearTimeout(t); t=setTimeout(()=>{ eState.filters.q=e.target.value; eState.page=1; renderExplore(); },200);
+  let debounceTimer; document.getElementById('ef-q').addEventListener('input', e=>{
+    clearTimeout(debounceTimer); debounceTimer=setTimeout(()=>{ eState.filters.q=e.target.value; eState.page=1; renderExplore(); },200);
   });
 }
 function renderExplore(){
@@ -338,24 +457,24 @@ function renderExplore(){
     if(q && !(dept.toLowerCase().includes(q)||subj.toLowerCase().includes(q)||goNo.toLowerCase().includes(q))) return false;
     return true;
   });
-  document.getElementById('e-count').textContent = `${filtered.length.toLocaleString()} records`;
+  document.getElementById('e-count').textContent = t('records', filtered.length);
   const pages = Math.max(1, Math.ceil(filtered.length/eState.pageSize));
   if(eState.page>pages) eState.page=pages;
   const start=(eState.page-1)*eState.pageSize;
   const rows = filtered.slice(start,start+eState.pageSize);
   const tb = document.getElementById('e-tbody');
-  tb.innerHTML = rows.length===0 ? `<tr><td colspan="7"><div class="empty">No records match these filters.</div></td></tr>` :
+  tb.innerHTML = rows.length===0 ? `<tr><td colspan="7"><div class="empty">${t('no_records')}</div></td></tr>` :
     rows.map(r=>{
       const [year,date,gzNo,subj,goNo,goDate,dept,part,dist,taluk,pdfId] = r;
       const loc = dist ? `${esc(dist)}${taluk?' / '+esc(taluk):''}` : '&mdash;';
       return `<tr><td>${date}</td><td><span class="pill">#${gzNo}/${year}</span></td><td>${esc(subj)||'&mdash;'}</td>
         <td>${esc(goNo)||'&mdash;'}</td><td>${esc(dept)||'&mdash;'}</td><td>${loc}</td>
-        <td><a class="dl" href="${dlUrl(gzNo,year,pdfId)}" target="_blank" rel="noopener">Open PDF &#8599;</a></td></tr>`;
+        <td><a class="dl" href="${dlUrl(gzNo,year,pdfId)}" target="_blank" rel="noopener">${t('dl_open')}</a></td></tr>`;
     }).join('');
   document.getElementById('e-pager').innerHTML = `
-    <button id="e-prev" ${eState.page<=1?'disabled':''}>&larr; Prev</button>
-    <span>Page ${eState.page} of ${pages}</span>
-    <button id="e-next" ${eState.page>=pages?'disabled':''}>Next &rarr;</button>`;
+    <button id="e-prev" ${eState.page<=1?'disabled':''}>${t('prev')}</button>
+    <span>${t('page_of', eState.page, pages)}</span>
+    <button id="e-next" ${eState.page>=pages?'disabled':''}>${t('next')}</button>`;
   const pv=document.getElementById('e-prev'), nx=document.getElementById('e-next');
   if(pv) pv.onclick=()=>{eState.page--;renderExplore();window.scrollTo({top:0,behavior:'smooth'});};
   if(nx) nx.onclick=()=>{eState.page++;renderExplore();window.scrollTo({top:0,behavior:'smooth'});};
@@ -406,7 +525,7 @@ function buildKB(){
   document.getElementById('kb-tree').querySelectorAll('[data-day]').forEach(el=>{
     el.addEventListener('click', ()=>{
       const day = el.dataset.day;
-      showFileList(`Files published on ${day}`, DATA.filter(r=>r[1]===day));
+      showFileList(t('kb_files_on_day', day), DATA.filter(r=>r[1]===day));
     });
   });
 
@@ -414,13 +533,13 @@ function buildKB(){
   const deptCount = {};
   for(const r of DATA){ if(r[6]) deptCount[r[6]] = (deptCount[r[6]]||0)+1; }
   const deptEntries = Object.entries(deptCount).sort((a,b)=>b[1]-a[1]);
-  document.getElementById('kb-dept-count').textContent = `${deptEntries.length} departments · ${DATA.length.toLocaleString()} files total`;
+  document.getElementById('kb-dept-count').textContent = t('kb_dept_count', deptEntries.length, DATA.length);
   document.getElementById('kb-depts').innerHTML = deptEntries.map(([d,c])=>
     `<div class="row2" style="cursor:pointer" data-dept="${esc(d)}"><span>${esc(d)}</span><span class="count">${c.toLocaleString()}</span></div>`).join('');
   document.getElementById('kb-depts').querySelectorAll('[data-dept]').forEach(el=>{
     el.addEventListener('click', ()=>{
       const dept = el.dataset.dept;
-      showFileList(`Files from ${dept}`, DATA.filter(r=>r[6]===dept));
+      showFileList(t('kb_files_from_dept', dept), DATA.filter(r=>r[6]===dept));
     });
   });
 
@@ -428,13 +547,13 @@ function buildKB(){
   const subjCount = {};
   for(const r of DATA){ if(r[3]) subjCount[r[3]] = (subjCount[r[3]]||0)+1; }
   const subjEntries = Object.entries(subjCount).sort((a,b)=>b[1]-a[1]);
-  document.getElementById('kb-subj-count').textContent = `${subjEntries.length.toLocaleString()} distinct subjects`;
+  document.getElementById('kb-subj-count').textContent = t('kb_subj_count', subjEntries.length);
   document.getElementById('kb-subjects').innerHTML = subjEntries.map(([s,c])=>
     `<div class="row2" style="cursor:pointer" data-subj="${esc(s)}"><span>${esc(s)}</span><span class="count">${c.toLocaleString()}</span></div>`).join('');
   document.getElementById('kb-subjects').querySelectorAll('[data-subj]').forEach(el=>{
     el.addEventListener('click', ()=>{
       const subj = el.dataset.subj;
-      showFileList(`Files on "${subj}"`, DATA.filter(r=>r[3]===subj));
+      showFileList(t('kb_files_on_subj', subj), DATA.filter(r=>r[3]===subj));
     });
   });
 }
@@ -446,10 +565,10 @@ function showFileList(title, rows){
   const shown = rows.slice(0, FILELIST_CAP);
   document.getElementById('kb-filelist-tbody').innerHTML = shown.map(r=>{
     const [year,date,gzNo,subj,goNo,goDate,dept,part,dist,taluk,pdfId,inOrd] = r;
-    return `<tr><td><span class="badge ${inOrd?'o':'e'}">${inOrd?'Ordinary':'Extraordinary'}</span></td><td>${date}</td>
+    return `<tr><td><span class="badge ${inOrd?'o':'e'}">${inOrd?t('badge_o'):t('badge_e')}</span></td><td>${date}</td>
       <td><span class="pill">#${gzNo}/${year}</span></td><td>${esc(subj)||'&mdash;'}</td><td>${esc(dept)||'&mdash;'}</td>
       <td><button class="idlink" data-open="${esc(pdfId)}">${esc(pdfId)}</button></td></tr>`;
-  }).join('') + (rows.length>FILELIST_CAP ? `<tr><td colspan="6" class="count" style="padding:10px">Showing first ${FILELIST_CAP} of ${rows.length.toLocaleString()} — use Explore or Search to filter further.</td></tr>` : '');
+  }).join('') + (rows.length>FILELIST_CAP ? `<tr><td colspan="6" class="count" style="padding:10px">${t('kb_showing_first', FILELIST_CAP, rows.length)}</td></tr>` : '');
   document.getElementById('kb-filelist-tbody').querySelectorAll('[data-open]').forEach(btn=>{
     btn.addEventListener('click', ()=>openViewer(btn.dataset.open));
   });
@@ -468,16 +587,16 @@ function openViewer(pdfId){
   document.getElementById('modal-heading').textContent = `Gazette No. ${gzNo}/${year} — File ${pid}`;
   document.getElementById('modal-iframe').src = url;
   const fields = [
-    ['Type', inOrd?'Ordinary Gazette':'Extraordinary Gazette'],
-    ['File ID (pdf_file_identifier)', pid],
-    ['Date', date], ['Year', year], ['Gazette No.', gzNo],
-    ['Subject', subj||'—'], ['GO No.', goNo||'—'], ['GO Date', goDate||'—'],
-    ['Department', dept||'—'], ['Part', part||'—'],
-    ['District', dist||'—'], ['Taluk', taluk||'—']
+    [t('a_type'), inOrd?t('badge_o'):t('badge_e')],
+    [t('a_fileid'), pid],
+    [t('a_date'), date], [t('a_year'), year], [t('a_gazette'), gzNo],
+    [t('a_subject'), subj||'—'], [t('a_go'), goNo||'—'], [t('a_go_date'), goDate||'—'],
+    [t('a_dept'), dept||'—'], [t('a_part'), part||'—'],
+    [t('a_district'), dist||'—'], [t('a_taluk'), taluk||'—']
   ];
   document.getElementById('modal-attrs').innerHTML = fields.map(([k,v])=>
     `<div class="arow"><span class="alabel">${esc(k)}</span><span class="aval">${esc(String(v))}</span></div>`).join('') +
-    `<a class="open-new" href="${url}" target="_blank" rel="noopener">Open PDF in new tab &#8599;</a>`;
+    `<a class="open-new" href="${url}" target="_blank" rel="noopener">${t('modal_open_new')}</a>`;
   document.getElementById('file-modal').classList.add('open');
 }
 document.getElementById('modal-close').addEventListener('click', ()=>{
@@ -539,7 +658,7 @@ function renderDistrictMap(distCount, distTaluk){
     p.addEventListener('click', ()=>zoomToTaluks(p.dataset.d, distCount, distTaluk));
     p.addEventListener('mouseenter', ()=>{ p.setAttribute('title', `${p.dataset.d}: ${(distCount[p.dataset.d]||0).toLocaleString()} files`); });
   });
-  document.getElementById('map-caption').innerHTML = "Actual district boundaries. Colour reflects file count &mdash; click a district to zoom into its taluks.";
+  document.getElementById('map-caption').innerHTML = t('map_cap');
 }
 function zoomToTaluks(dist, distCount, distTaluk){
   const taluks = GEO.taluks.filter(t=>t.district===dist);
@@ -569,7 +688,7 @@ function zoomToTaluks(dist, distCount, distTaluk){
     p.addEventListener('mouseenter', ()=>{ p.setAttribute('title', `${p.dataset.t}: ${(counts[p.dataset.t]||0).toLocaleString()} files`); });
   });
   document.getElementById('map-caption').innerHTML =
-    `Taluks of <b>${esc(dist)}</b>. <button class="back-link" id="back-to-districts">&larr; Back to all districts</button>`;
+    `${t('map_taluks_of', '<b>'+esc(dist)+'</b>')} <button class="back-link" id="back-to-districts">${t('map_back')}</button>`;
   document.getElementById('back-to-districts').addEventListener('click', ()=>{
     const distCountAll = {}, distTalukAll = {};
     for(const r of DATA){ const d=r[8], tk=r[9]; if(!d) continue; distCountAll[d]=(distCountAll[d]||0)+1;
@@ -580,13 +699,74 @@ function zoomToTaluks(dist, distCount, distTaluk){
 }
 function showTalukList(dist, taluks){
   document.getElementById('taluk-panel').style.display='block';
-  document.getElementById('taluk-title').textContent = `${dist} — Taluks`;
+  document.getElementById('taluk-title').textContent = dist;
   const entries = Object.entries(taluks).sort((a,b)=>b[1]-a[1]);
-  document.getElementById('taluk-list').innerHTML = entries.length ? entries.map(([t,c])=>
-    `<div class="row2"><span>${esc(t)}</span><span class="count">${c.toLocaleString()}</span></div>`).join('')
-    : `<div class="empty">No taluk-level data for this district.</div>`;
+  document.getElementById('taluk-list').innerHTML = entries.length ? entries.map(([tk,c])=>
+    `<div class="row2"><span>${esc(tk)}</span><span class="count">${c.toLocaleString()}</span></div>`).join('')
+    : `<div class="empty">${t('map_no_taluk')}</div>`;
   document.getElementById('taluk-panel').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
+
+/* ---------- CALENDAR ---------- */
+let calBuilt=false;
+function buildCalendar(){
+  calBuilt=true;
+  const dateCount = {};
+  for(const r of DATA){ dateCount[r[1]] = (dateCount[r[1]]||0)+1; }
+  const years = uniqSorted(DATA.map(r=>r[0])).sort().reverse();
+  const sel = document.getElementById('cal-year');
+  const prevVal = sel.value;
+  sel.innerHTML = years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  sel.value = years.includes(prevVal) ? prevVal : years[0];
+  sel.onchange = ()=> renderCalendarYear(sel.value, dateCount);
+  renderCalendarYear(sel.value, dateCount);
+}
+function renderCalendarYear(year, dateCount){
+  const y = +year;
+  const start = new Date(Date.UTC(y,0,1));
+  const startDow = start.getUTCDay(); // 0=Sun
+  const cellSize = 12, gap = 2, leftPad = 26, topPad = 16;
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const dayLabels = ['','Mon','','Wed','','Fri',''];
+  let total = 0, max = 1;
+  const days = [];
+  for(let d=new Date(Date.UTC(y,0,1)); d.getUTCFullYear()===y; d.setUTCDate(d.getUTCDate()+1)){
+    const key = d.toISOString().slice(0,10);
+    const c = dateCount[key]||0;
+    total += c; if(c>max) max=c;
+    const dayIndex = Math.floor((d - start)/86400000) + startDow;
+    days.push({date:key, count:c, week:Math.floor(dayIndex/7), dow:dayIndex%7});
+  }
+  document.getElementById('cal-total').textContent = `${t('cal_total', total)} ${year}`;
+  const weeks = Math.max(...days.map(d=>d.week))+1;
+  const W = leftPad + weeks*(cellSize+gap) + 10, H = topPad + 7*(cellSize+gap) + 10;
+  const svg = document.getElementById('cal-svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('width','100%');
+  let s = '';
+  dayLabels.forEach((lab,i)=>{ if(lab) s += `<text x="4" y="${topPad+i*(cellSize+gap)+cellSize-2}" class="dlabel" text-anchor="start">${lab}</text>`; });
+  let lastMonth=-1;
+  days.forEach(d=>{
+    const m = +d.date.slice(5,7);
+    if(m!==lastMonth){ lastMonth=m;
+      s += `<text x="${leftPad+d.week*(cellSize+gap)}" y="10" class="dlabel" text-anchor="start">${monthNames[m-1]}</text>`;
+    }
+    const t2 = max>0 ? d.count/max : 0;
+    const fill = d.count===0 ? 'var(--chip)' : colorFor(0.25+0.75*t2);
+    s += `<rect data-day="${d.date}" x="${leftPad+d.week*(cellSize+gap)}" y="${topPad+d.dow*(cellSize+gap)}" width="${cellSize}" height="${cellSize}" rx="2" fill="${fill}" class="geo-poly"><title>${d.date}: ${d.count}</title></rect>`;
+  });
+  svg.innerHTML = s;
+  svg.querySelectorAll('rect[data-day]').forEach(r=>{
+    r.addEventListener('click', ()=>{
+      const day = r.dataset.day;
+      const rows = DATA.filter(x=>x[1]===day);
+      if(rows.length===0) return;
+      document.querySelector('.nav [data-view="kb"]').click();
+      showFileList(t('kb_files_on_day', day), rows);
+    });
+  });
+}
+applyStaticI18n();
 </script>
 </body>
 </html>
